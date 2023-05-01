@@ -1,0 +1,24 @@
+<ul class="list-group">
+  {{#each todos}}
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col-auto me-auto">
+        <input style="vertical-align: middle" type="checkbox" name="isDone" {{#if this.isDone}}checked{{/if}} disabled>
+        <h4 style="display: inline; vertical-align:middle">
+          {{this.name}}
+        </h4> 
+      </div>
+      <div class="col-auto">
+        {{!-- "/":絕對路徑。 "./":相對路徑 。這邊兩種都可用不影響--}}
+        <a class="btn btn-light" href="./todos/{{this._id}}">detail</a>
+        {{!-- 這邊的 _id 為 MongoDB 內預設好的識別碼 _id --}}
+        <a class="btn btn-success" href="/todos/{{this._id}}/edit">edit</a>
+        <form action="/todos/{{this._id}}?_method=DELETE" method="POST" style="display:inline">
+          <button class="btn btn-danger" type="submit">delete</button>
+        </form>
+        {{!-- <form>預設是block --}}
+      </div>
+    </div>
+  </li>
+  {{/each}}
+</ul>
