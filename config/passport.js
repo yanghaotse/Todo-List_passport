@@ -30,7 +30,7 @@ module.exports = (app) => {
   passport.deserializeUser((id,done) => {
     User.findById(id)
     .lean()
-    .then( user => done(null, user))
+    .then( user => done(null, user)) //這邊取出的user資訊之後會放入req.user供後續使用
     .catch( error => done (error, null))
   })
 }
