@@ -5,6 +5,7 @@ const methodOverride = require('method-override')
 const routes = require('./routes')//引入路由器時，路徑設定為 /routes 就會自動去尋找目錄下叫做 index 的檔案
 require('./config/mongoose')
 const session = require('express-session')
+const usePassport = require('./config/passport')// !! 載入設定檔，要寫在express-session 以後
 
 
 const PORT = process.env.PORT || 3000
@@ -24,7 +25,7 @@ app.use(session({
   //saveUninitialized: 強制將未初始化的 session 存回 session store。未初始化表示這個 session 是新的而且沒有被修改過，例如未登入的使用者的 session。
 }))
 
-
+usePassport(app)// !! 呼叫 Passport 函式並傳入 app，這條要寫在路由之前
 app.use(routes)
 
 app.listen(PORT, () => {
