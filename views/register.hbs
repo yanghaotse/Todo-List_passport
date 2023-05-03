@@ -2,6 +2,8 @@
   <div class="col-md-6 m-auto">
     <div class="card card-body">
       <h1 class="text-center mt-3">Register</h1>
+      {{!-- 只要看到大於符號 >，Handlebars 就會去 partials 資料夾下尋找符合名稱的樣版 --}}
+      {{> message}}
       <form action="/users/register" method="POST">
         <div class="mb-3">
           <label for="name" class="mb-2">Name</label>

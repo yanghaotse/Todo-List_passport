@@ -6,7 +6,7 @@ const routes = require('./routes')//引入路由器時，路徑設定為 /routes
 require('./config/mongoose')
 const session = require('express-session')
 const usePassport = require('./config/passport')// !! 載入設定檔，要寫在express-session 以後
-
+const flash = require('connect-flash')
 
 const PORT = process.env.PORT || 3000
 const app = express()
@@ -26,7 +26,7 @@ app.use(session({
 }))
 
 usePassport(app)// !! 呼叫 Passport 函式並傳入 app，這條要寫在路由之前
-
+app.use(flash()) //掛載flash套件
 // 使用 app.use 代表這組 middleware 會作用於所有的路由
 app.use((req, res, next) => {
   console.log(req.user) //檢查用
@@ -36,13 +36,15 @@ app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated() //為何這邊的isAuthenticated()不用require?因為有require('passport.js')?
   //res.locals 是 Express.js 幫我們開的一條捷徑，放在 res.locals 裡的資料，所有的 view 都可以存取。
   res.locals.user = req.user //把使用者資料交接給 res 使用
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
 
 app.use(routes)
 
 app.listen(PORT, () => {
-  console.log(`express is running on http://localhost:${PORT}` )
+  console.log(`App is running on http://localhost:${PORT}` )
 })
 
 

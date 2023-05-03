@@ -23,7 +23,7 @@ router.get('/:id', (req, res) => {
   const userId = req.user._id
   const _id = req.params.id
   // console.log(id)//檢查
-  return Todo.findOne({_id, userId})  //從資料庫裡找出"特定一筆"資料
+  return Todo.findOne({_id, userId})
     .lean() //將資料整理乾淨
     .then((todo) => res.render('detail',{ todo })) //todo為選取完存放的變數
     .catch(error => console.log(error))
