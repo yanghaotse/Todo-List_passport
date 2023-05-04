@@ -11,6 +11,9 @@ const flash = require('connect-flash')
 const PORT = process.env.PORT || 3000
 const app = express()
 
+if(process.env.NODE_ENV !== 'production'){
+  require('dotenv').config()
+}
 
 app.engine('hbs', exphbs({defaultLayout : 'main', extname : '.hbs'}))//在應用程式裡新增了一個叫 hbs 的樣板引擎
 // {extname: '.hbs'}，是指定副檔名為 .hbs
@@ -18,7 +21,7 @@ app.set('view engine', 'hbs')//hbs元件 正式掛載
 app.use(express.urlencoded({ extended: true}))//body-parser
 app.use(methodOverride('_method'))
 app.use(session({
-  secret: 'ThisIsMySecret',
+  secret: process.env.SESSION_SECRET,
   resave: false, 
   //resave: 當設定為 true 時，會在每一次與使用者互動後，強制把 session 更新到 session store 裡。
   saveUninitialized: true
@@ -29,7 +32,7 @@ usePassport(app)// !! 呼叫 Passport 函式並傳入 app，這條要寫在路�
 app.use(flash()) //掛載flash套件
 // 使用 app.use 代表這組 middleware 會作用於所有的路由
 app.use((req, res, next) => {
-  console.log(req.user) //檢查用
+  // console.log(req.user) //檢查用
   // req.user 是在反序列化的時候，取出的 user 資訊，之後會放在 req.user 裡以供後續使用
   // 把 req.isAuthenticated() 回傳的布林值，交接給 res 使用
 
